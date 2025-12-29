@@ -13,7 +13,7 @@ services:
       - "${DB_PORT:-3306}:3306"
     volumes:
       # Import SQL file on container initialization
-      - ./docker_capstone.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./assets/docker_capstone.sql:/docker-entrypoint-initdb.d/init.sql
       # Persist database data
       - mysql-data:/var/lib/mysql
     networks:
@@ -75,7 +75,7 @@ services:
       KPI_CACHE_TTL_SECONDS: 300
       
       # Sample size for dropout prediction (20%)
-      SAMPLE_SIZE: 0.2
+      SAMPLE_SIZE: 0.001
     volumes:
       # Mount models directory untuk update models tanpa rebuild
       - ./capstone-backend/src/assets/models:/app/src/assets/models:rw
@@ -103,7 +103,9 @@ services:
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     environment:
+      # Browser client will access backend via localhost (exposed port)
       NEXT_PUBLIC_API_URL: http://localhost:${BACKEND_PORT:-8000}/api
+      API_BASE_URL: http://localhost:${BACKEND_PORT:-8000}/api
       NODE_ENV: production
     depends_on:
       backend:

@@ -6,6 +6,12 @@ Write-Host "Copy ML Models to Backend" -ForegroundColor Cyan
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host ""
 
+# Get script directory and navigate to project root
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$projectRoot = Split-Path -Parent $scriptDir
+Set-Location $projectRoot
+
+$sourceDir = "assets"
 $targetDir = "capstone-backend\src\assets\models"
 
 # Create target directory if not exists
@@ -14,10 +20,11 @@ if (-not (Test-Path $targetDir)) {
     New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
 }
 
+Write-Host "Source directory: $sourceDir" -ForegroundColor Cyan
 Write-Host "Target directory: $targetDir" -ForegroundColor Cyan
 Write-Host ""
 
-# Models mapping (root filename -> target filename)
+# Models mapping (source filename -> target filename)
 $models = @{
     "dropout_modelv2.pkl" = "dropout_model.pkl"
     "final_grade_modelv2.pkl" = "final_grade_model.pkl"
@@ -29,11 +36,12 @@ $allSuccess = $true
 
 foreach ($source in $models.Keys) {
     $target = $models[$source]
+    $sourcePath = Join-Path $sourceDir $source
     $targetPath = Join-Path $targetDir $target
     
-    if (Test-Path $source) {
-        Write-Host "[COPY] $source -> $target" -ForegroundColor Green
-        Copy-Item -Path $source -Destination $targetPath -Force
+    if (Test-Path $sourcePath) {
+        Write-Host "[COPY] $sourcePath -> $target" -ForegroundColor Green
+        Copy-Item -Path $sourcePath -Destination $targetPath -Force
         
         # Verify copied
         if (Test-Path $targetPath) {
@@ -45,7 +53,7 @@ foreach ($source in $models.Keys) {
             $allSuccess = $false
         }
     } else {
-        Write-Host "[SKIP] $source not found" -ForegroundColor Yellow
+        Write-Host "[SKIP] $sourcePath not found" -ForegroundColor Yellow
         $allSuccess = $false
     }
     Write-Host ""
