@@ -1,6 +1,0 @@
-[submodule "capstone-backend"]
-	path = capstone-backend
-	url = https://github.com/penicili/capstone-backend.git
-[submodule "capstone-project-frontend"]
-	path = capstone-project-frontend
-	url = https://github.com/penicili/capstone-project-frontend.git
