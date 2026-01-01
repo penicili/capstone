@@ -32,9 +32,9 @@ Write-Host ""
 Write-Host "Checking ML Models..." -ForegroundColor Yellow
 $modelsPath = "capstone-backend\src\assets\models"
 $allChecksPass = $allChecksPass -and (Test-FileExists "$modelsPath\dropout_model.pkl" "Dropout Model")
-$allChecksPass = $allChecksPass -and (Test-FileExists "$modelsPath\final_grade_model.pkl" "Final Grade Model")
+$allChecksPass = $allChecksPass -and (Test-FileExists "$modelsPath\final_grade_model.pkl" "Final Result Model")
 $allChecksPass = $allChecksPass -and (Test-FileExists "$modelsPath\label_encoder_dropout.pkl" "Label Encoder Dropout")
-$allChecksPass = $allChecksPass -and (Test-FileExists "$modelsPath\label_encoder_finalgrade.pkl" "Label Encoder Final Grade")
+$allChecksPass = $allChecksPass -and (Test-FileExists "$modelsPath\label_encoder_finalgrade.pkl" "Label Encoder Final Result")
 
 # Check configuration files
 Write-Host ""
